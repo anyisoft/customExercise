@@ -35,9 +35,8 @@ int main()
 
     char multiplicand[200];
     char multiplier[1];
-    char carry;
-
-    char i, j;
+    
+    char i;
     char cResult;
 
     int resultLen = 1;
@@ -47,31 +46,15 @@ int main()
     result[0] = 1;
     for (i = 1; i < 10; i++) {
         
-        carry = 0;
-        
         multiplier[0] = i;
 
         memcpy(multiplicand, result, resultLen);
         multiplicandLen = resultLen;
 
         memset(result, 0x0, sizeof(result));
-        for (j = 0; j < multiplicandLen; j++) {
-            cResult = multiplicand[j] * multiplier[0];
-            
-            result[j] = cResult % 10 + carry;
-            carry = cResult / 10;
 
-            if (result[j] >= 10) {
-                carry += result[j] / 10;
-                result[j] %= 10;
-            }
+        resultLen = multiOneDigit(result, multiplicand, multiplicandLen, multiplier[0]);
 
-        }
-
-        if (carry > 0) {
-            result[j] = carry;
-            resultLen++;
-        }
 
         std::cout << "temp result: " ;
         for (int rIndex = resultLen - 1; rIndex > -1; rIndex--) {
@@ -84,7 +67,7 @@ int main()
 
 int multiOneDigit(char result[], char multiplicand[], int multiplicandLen, char multiplier)
 {
-    int resultLen = 0;
+    int resultLen = multiplicandLen;
     int j;
     char cResult;
     char carry;
