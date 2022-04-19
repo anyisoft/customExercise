@@ -13,9 +13,9 @@
 //    * 10       *  11          *  12
 //---------  ----------    -----------
 //  000000     3628800       79833600
-// 362880     3628800        3991680
+// 362880     3628800       39916800
 //---------  -----------   -----------
-// 3628800    39916800      119750400
+// 3628800    39916800      479001600
 
 #include <iostream>
 
@@ -29,38 +29,90 @@
 // return value, int, the result length. < 1 is failed.
 int multiOneDigit(char result[], char multiplicand[], int multiplicandLen, char multiplier);
 
+int sumTempResult(char result[], char* presultTemp[], char j, int resultLen);
+
 int main()
 {
     char result[200];
+    char resultTemp1[200];
+    char resultTemp2[200];
+    char resultTemp3[200];
+
+    char* presultTemp[3];
 
     char multiplicand[200];
-    char multiplier[1];
+    char multiplier[4];
     
-    char i;
+    char i, j, k;
     char cResult;
 
     int resultLen = 1;
     int multiplicandLen = 0;
+    int multiplierLen = 0;
+
+    int multiplierTemp;
+
+    memset(resultTemp1, 0x0, sizeof(resultTemp1));
+    memset(resultTemp2, 0x0, sizeof(resultTemp2));
+    memset(resultTemp3, 0x0, sizeof(resultTemp3));
+
+    presultTemp[0] = resultTemp1;
+    presultTemp[1] = resultTemp2;
+    presultTemp[2] = resultTemp3;
 
     memset(result, 0x0, sizeof(result));
     result[0] = 1;
-    for (i = 1; i < 10; i++) {
+    for (i = 1; i < 90; i++) {
         
-        multiplier[0] = i;
-
         memcpy(multiplicand, result, resultLen);
         multiplicandLen = resultLen;
-
         memset(result, 0x0, sizeof(result));
 
-        resultLen = multiOneDigit(result, multiplicand, multiplicandLen, multiplier[0]);
+        memset(multiplier, 0x0, sizeof(multiplier));
+        multiplierTemp = i;
+        j = 0;
+        do {
+            multiplier[j] = multiplierTemp % 10;
+            multiplierTemp /= 10;
+            j++;
+        } while (multiplierTemp > 0);
+        multiplierLen = j;
+        
+        for (j = 0; j < multiplierLen; j++) {
+
+            memset(presultTemp[j], 0x0, 200);
+            resultLen = multiOneDigit(presultTemp[j], multiplicand, multiplicandLen, multiplier[j]);
+
+            if (j > 0) {
+                for (k = resultLen; k > 0; k--) {
+                    presultTemp[j][k] = presultTemp[j][k - 1];
+                }
+                for (k = 0; k < j; k++) {
+                    presultTemp[j][k] = 0;
+                }
+
+                resultLen += j;
+            }
+            
+            std::cout << "temp sub result: ";
+            for (int rIndex = resultLen - 1; rIndex > -1; rIndex--) {
+                std::cout << char(presultTemp[j][rIndex] + '0');
+            }
+            std::cout << std::endl;
+
+            //memcpy(result, presultTemp[j], resultLen);
+        }
+
+        // add temp results to one result
+        resultLen = sumTempResult(result, presultTemp, j, resultLen);
 
 
-        std::cout << "temp result: " ;
+        std::cout << "temp result: ";
         for (int rIndex = resultLen - 1; rIndex > -1; rIndex--) {
             std::cout << char(result[rIndex] + '0');
         }
         std::cout << std::endl;
+
     }
 
 }
@@ -94,6 +146,39 @@ int multiOneDigit(char result[], char multiplicand[], int multiplicandLen, char 
 
     return resultLen;
 }
+
+int sumTempResult(char result[], char* presultTemp[], char trNum, int resultLen)
+{
+    int i;
+    int resultLenNew = resultLen;
+    char cResult;
+    char carry;
+
+    carry = 0;
+    for (i = 0; i < resultLen; i++) {
+        
+        cResult = 0;
+        for (char j = 0; j < trNum; j++) {
+            cResult += presultTemp[j][i];
+        }
+
+        result[i] = cResult % 10 + carry;
+        carry = cResult / 10;
+
+        if (result[i] >= 10) {
+            carry += result[i] / 10;
+            result[i] %= 10;
+        }
+    }
+
+    if (carry > 0) {
+        result[i] = carry;
+        resultLenNew++;
+    }
+
+    return resultLenNew;
+}
+
 
 /*
 int main()
