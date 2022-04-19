@@ -27,7 +27,6 @@ int main()
     char multiplicand[200];
     char multiplier[1];
     char carry[1];
-    char carryOld[1];
 
     char i, j;
     char cResult;
@@ -40,7 +39,6 @@ int main()
     for (i = 1; i < 10; i++) {
         
         carry[0] = 0;
-        carryOld[0] = 0;
         
         multiplier[0] = i;
 
@@ -51,9 +49,7 @@ int main()
         for (j = 0; j < multiplicandLen; j++) {
             cResult = multiplicand[j] * multiplier[0];
             
-            carryOld[0] = carry[0];
-            
-            result[j] = cResult % 10 + carryOld[0];
+            result[j] = cResult % 10 + carry[0];
             carry[0] = cResult / 10;
 
             if (result[j] >= 10) {
