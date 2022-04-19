@@ -20,13 +20,22 @@
 #include <iostream>
 
 // multiplier is 1 bit
+
+// param describe:
+// result, OUTPUT, char array, length not less multiplicanLen+1
+// multiplicand, INPUT, char array, example(5040 is [...5, 0, 4, 0] )
+// multiplicand, INPUT, int, example(5040's length is 4)
+// multiplier, INPUT, char, a decimal digit, someone of 0--9.
+// return value, int, the result length. < 1 is failed.
+int multiOneDigit(char result[], char multiplicand[], int multiplicandLen, char multiplier);
+
 int main()
 {
     char result[200];
 
     char multiplicand[200];
     char multiplier[1];
-    char carry[1];
+    char carry;
 
     char i, j;
     char cResult;
@@ -38,7 +47,7 @@ int main()
     result[0] = 1;
     for (i = 1; i < 10; i++) {
         
-        carry[0] = 0;
+        carry = 0;
         
         multiplier[0] = i;
 
@@ -49,18 +58,18 @@ int main()
         for (j = 0; j < multiplicandLen; j++) {
             cResult = multiplicand[j] * multiplier[0];
             
-            result[j] = cResult % 10 + carry[0];
-            carry[0] = cResult / 10;
+            result[j] = cResult % 10 + carry;
+            carry = cResult / 10;
 
             if (result[j] >= 10) {
-                carry[0] += result[j] / 10;
+                carry += result[j] / 10;
                 result[j] %= 10;
             }
 
         }
 
-        if (carry[0] > 0) {
-            result[j] = carry[0];
+        if (carry > 0) {
+            result[j] = carry;
             resultLen++;
         }
 
@@ -73,6 +82,35 @@ int main()
 
 }
 
+int multiOneDigit(char result[], char multiplicand[], int multiplicandLen, char multiplier)
+{
+    int resultLen = 0;
+    int j;
+    char cResult;
+    char carry;
+
+    carry = 0;
+
+    for (j = 0; j < multiplicandLen; j++) {
+        cResult = multiplicand[j] * multiplier;
+
+        result[j] = cResult % 10 + carry;
+        carry = cResult / 10;
+
+        if (result[j] >= 10) {
+            carry += result[j] / 10;
+            result[j] %= 10;
+        }
+
+    }
+
+    if (carry > 0) {
+        result[j] = carry;
+        resultLen++;
+    }
+
+    return resultLen;
+}
 
 /*
 int main()
