@@ -1,0 +1,6 @@
+/.vs
+/Debug
+/x64
+/factorial/Debug
+/factorial/x64
+/factorial/factorial.vcxproj.user
