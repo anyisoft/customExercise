@@ -5,3 +5,5 @@
 /factorial/x64
 /factorial/factorial.vcxproj.user
 /maze/x64
+/test/Debug
+/test/x64
