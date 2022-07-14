@@ -1,33 +1,59 @@
-﻿// test.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// test_cvV2_chap09.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
+
+#pragma warning(disable : 4996)
 
 #include <stdio.h>
 #include <string.h>
 /*
+struct A {
+    int n;
+    float f;
+};
+
 int main()
 {
-    char szHello[] = "Hello";
-    const char* pszHello = "Hello";
-
-    printf("%d\r\n", sizeof(szHello));
-    printf("%d\r\n", sizeof(pszHello));
-
-    szHello[0] = 'h';
-    ((char*)pszHello)[0] = 'h'; // 修改rdata 节属性(40-->C0，使代码可执行)
-    
-    system("pause");
-
-    return 0;
+    struct A a;
+    struct A* p = &a;
+    printf("%p\n", &p->f);
+    printf("%p\n", &((struct A*)NULL)->f);
 }
 */
 
+class Person {
+public:
+    Person() {
+        name = new char[32];
+        if (name != NULL) {
+            strcpy(name, "tom");
+        }
+    }
+
+    ~Person() {
+        if (name != NULL) {
+            delete [] name;
+            name = NULL;
+        }
+    }
+
+    const char* getName() {
+        return name;
+    }
+
+private:
+    char* name;
+};
+
+void show(Person obj)
+{
+    printf(obj.getName());
+}
+
 int main(int argc, char* argv[])
 {
-    char szName[32] = { 0 };
-    char szPassword[32] = { 0 };
-
-    printf("strlen name:%d\n", strlen(szName));
-    printf("strlen password:%d\n", strlen(szPassword));
+    Person person;
+    show(person);
+    return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

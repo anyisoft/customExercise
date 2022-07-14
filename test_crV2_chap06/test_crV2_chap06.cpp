@@ -1,33 +1,16 @@
-﻿// test.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// test_crV2_chap06.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
-
+#pragma warning(disable : 4996)
 #include <stdio.h>
-#include <string.h>
-/*
-int main()
-{
-    char szHello[] = "Hello";
-    const char* pszHello = "Hello";
-
-    printf("%d\r\n", sizeof(szHello));
-    printf("%d\r\n", sizeof(pszHello));
-
-    szHello[0] = 'h';
-    ((char*)pszHello)[0] = 'h'; // 修改rdata 节属性(40-->C0，使代码可执行)
-    
-    system("pause");
-
-    return 0;
-}
-*/
 
 int main(int argc, char* argv[])
 {
-    char szName[32] = { 0 };
-    char szPassword[32] = { 0 };
-
-    printf("strlen name:%d\n", strlen(szName));
-    printf("strlen password:%d\n", strlen(szPassword));
+	int n = 1;
+	scanf("%d", &n);
+	char ch = 2;
+	scanf("%c", &ch);
+	printf("%d %c\n", n, ch);
+	return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
